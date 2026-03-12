@@ -4,7 +4,7 @@ metadata:
   name: workshop-quarkus-blue_green_deployments_openshift
   title: Blue-Green Deployments - Quarkus
   description: |
-    Blue-Green Deployments
+    Blue-Green Deployments with Quarkus
   annotations:
     backstage.io/techdocs-ref: dir:.
   tags:
