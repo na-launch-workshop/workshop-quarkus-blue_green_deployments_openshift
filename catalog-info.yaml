@@ -1,0 +1,21 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: workshop-quarkus-blue_green_deployments_openshift
+  title: Blue-Green Deployments - Quarkus
+  description: |
+    Blue-Green Deployments
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+  tags:
+    - bluegreen
+    - quarkus
+# links:
+#    - url: https://<openshift-cluster>/#<hosted-git-repo>
+#      title: "Launch from Dev Spaces"
+#      icon: web
+spec:
+  type: module
+  lifecycle: production
+  owner: group:default/workshop-admins
+  subcomponentOf: component:default/workshop-repository

@@ -1,0 +1,55 @@
+schemaVersion: 2.2.2
+metadata:
+  name: workshop-quarkus-blue_green_deployments_openshift
+  version: 1.0.0
+  description: DevSpaces workspace for Quarkus hello country app
+attributes:
+  che-editor: vscode
+components:
+  - name: tools        
+    container:
+      image: image-registry.openshift-image-registry.svc:5000/openshift/udi-rhel9:latest
+      env:
+        - name: QUARKUS_HTTP_HOST
+          value: 0.0.0.0
+      endpoints:
+        - exposure: none
+          name: debug
+          protocol: tcp
+          targetPort: 5005
+        - exposure: public
+          name: hello-by-lang
+          protocol: https
+          targetPort: 8080          
+          path: /
+      volumeMounts:
+        - name: m2
+          path: /home/user/.m2
+      cpuLimit: '4'
+      cpuRequest: '500m'
+      memoryLimit: '6Gi'
+      memoryRequest: '2Gi'
+      mountSources: true
+  - name: m2
+    volume:
+      size: 1G
+
+commands:
+  - id: 1-package
+    exec:
+      label: "1. Package the application"
+      component: tools
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: "mvn package"
+      group:
+        kind: build
+        isDefault: true
+  - id: 2-startdev
+    exec:
+      label: "2. Start Development mode (Hot reload + debug)"
+      component: tools
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: "mvn compile quarkus:dev -Dquarkus.analytics.disabled=true -Dquarkus.live-reload.enabled=true"
+      group:
+        kind: run
+        isDefault: true
